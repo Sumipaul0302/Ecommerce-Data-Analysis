@@ -1,0 +1,183 @@
+mysql> create database EcommerceProject;
+Query OK, 1 row affected (0.15 sec)
+
+mysql> CREATE TABLE `customer` (
+    -> `customer_id` varchar(10) NOT NULL,
+    -> `name` varchar(100) NOT NULL,
+    -> `city` varchar(65) NOT NULL,
+    -> `email` varchar(45) NOT NULL,
+    -> `phone_no` varchar(15) NOT NULL,
+    -> `address` varchar(100) NOT NULL,
+    -> `pin_code` int NOT NULL,
+    -> PRIMARY KEY (`customer_id`)
+    -> ) ;
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> desc customer;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| customer_id | varchar(10)  | NO   | PRI | NULL    |       |
+| name        | varchar(100) | NO   |     | NULL    |       |
+| city        | varchar(65)  | NO   |     | NULL    |       |
+| email       | varchar(45)  | NO   |     | NULL    |       |
+| phone_no    | varchar(15)  | NO   |     | NULL    |       |
+| address     | varchar(100) | NO   |     | NULL    |       |
+| pin_code    | int          | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+7 rows in set (0.03 sec)
+
+mysql> CREATE TABLE `product` (
+    -> `product_id` varchar(10) NOT NULL,
+    -> `product_name` varchar(100) NOT NULL,
+    -> `category` varchar(65) NOT NULL,
+    -> `sub_category` varchar(45) NOT NULL,
+    -> `original_price` double NOT NULL,
+    -> `selling_price` double NOT NULL,
+    -> `stock` int NOT NULL,
+    -> PRIMARY KEY (`product_id`)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc product;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| product_id     | varchar(10)  | NO   | PRI | NULL    |       |
+| product_name   | varchar(100) | NO   |     | NULL    |       |
+| category       | varchar(65)  | NO   |     | NULL    |       |
+| sub_category   | varchar(45)  | NO   |     | NULL    |       |
+| original_price | double       | NO   |     | NULL    |       |
+| selling_price  | double       | NO   |     | NULL    |       |
+| stock          | int          | NO   |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> CREATE TABLE `order_details` (
+    -> `order_id` int NOT NULL AUTO_INCREMENT,
+    -> `customer_id` varchar(10) NOT NULL,
+    -> `product_id` varchar(10) NOT NULL,
+    -> `quantity` double NOT NULL,
+    -> `total_price` double NOT NULL,
+    -> `payment_mode` varchar(60) NOT NULL,
+    -> `order_date` datetime DEFAULT NULL,
+    -> `order_status` varchar(20) NOT NULL,
+    -> PRIMARY KEY (`order_id`),
+    -> KEY `customer_id` (`customer_id`),
+    -> KEY `product_id` (`product_id`),
+    -> CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`customer_id`)
+    -> REFERENCES `customer` (`customer_id`),
+    -> CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`)
+    -> REFERENCES `product` (`product_id`)
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> desc order_details;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| order_id     | int         | NO   | PRI | NULL    | auto_increment |
+| customer_id  | varchar(10) | NO   | MUL | NULL    |                |
+| product_id   | varchar(10) | NO   | MUL | NULL    |                |
+| quantity     | double      | NO   |     | NULL    |                |
+| total_price  | double      | NO   |     | NULL    |                |
+| payment_mode | varchar(60) | NO   |     | NULL    |                |
+| order_date   | datetime    | YES  |     | NULL    |                |
+| order_status | varchar(20) | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+8 rows in set (0.01 sec)
+
+
+         
+mysql> INSERT INTO `customer` (`customer_id`, `name`, `city`, `email`, `phone_no`, `address`, `pin_code`) VALUES
+    -> ('CUST001', 'Rahul Sharma', 'Kolkata', 'rahul.sharma@example.com', '9876543210', '123 Main Street', 500001),
+    -> ('CUST002', 'Priya Patel', 'Mumbai', 'priya.patel@example.com', '8765432109', '456 Market Road', 400001),
+    -> ('CUST003', 'Amit Singh', 'Kolkata', 'amit.singh@example.com', '7654321098', '789 Park Avenue', 700001),
+    -> ('CUST004', 'Ananya Das', 'Chennai', 'ananya.das@example.com', '6543210987', '101 Galaxy Street', 600001),
+    -> ('CUST005', 'Sandeep Verma', 'Mumbai', 'sandeep.verma@example.com', '5432109876', '222 Tech Lane', 560001),
+    -> ('CUST006', 'Neha Kapoor', 'Chennai', 'neha.kapoor@example.com', '4321098765', '333 Innovator Road', 500001),
+    -> ('CUST007', 'Vikram Yadav', 'Delhi', 'vikram.yadav@example.com', '3210987654', '444 Startup Street ', 380001),
+    -> ('CUST008', 'Pooja Reddy', 'Pune', 'pooja.reddy@example.com', '2109876543', '555 Venture Avenue', 411001),
+    -> ('CUST009', 'Raj Malhotra', 'Jaipur', 'raj.malhotra@example.com', '1098765432', '666 Opportunity Lane', 302001),
+    -> ('CUST010', 'Kavita Gupta', 'Mumbai','kavita.gupta@example.com', '9876543210', '777 Dream Street', 226001);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from customer;
++-------------+---------------+---------+---------------------------+------------+----------------------+----------+
+| customer_id | name          | city    | email                     | phone_no   | address              | pin_code |
++-------------+---------------+---------+---------------------------+------------+----------------------+----------+
+| CUST001     | Rahul Sharma  | Kolkata | rahul.sharma@example.com  | 9876543210 | 123 Main Street      |   110001 |
+| CUST002     | Priya Patel   | Mumbai  | priya.patel@example.com   | 8765432109 | 456 Market Road      |   400001 |
+| CUST003     | Amit Singh    | Kolkata | amit.singh@example.com    | 7654321098 | 789 Park Avenue      |   700001 |
+| CUST004     | Ananya Das    | Chennai | ananya.das@example.com    | 6543210987 | 101 Galaxy Street    |   600001 |
+| CUST005     | Sandeep Verma | Mumbai  | sandeep.verma@example.com | 5432109876 | 222 Tech Lane        |   560001 |
+| CUST006     | Neha Kapoor   | Chennai | neha.kapoor@example.com   | 4321098765 | 333 Innovator Road   |   500001 |
+| CUST007     | Vikram Yadav  | Delhi   | vikram.yadav@example.com  | 3210987654 | 444 Startup Street   |   380001 |
+| CUST008     | Pooja Reddy   | Pune    | pooja.reddy@example.com   | 2109876543 | 555 Venture Avenue   |   411001 |
+| CUST009     | Raj Malhotra  | Jaipur  | raj.malhotra@example.com  | 1098765432 | 666 Opportunity Lane |   302001 |
+| CUST010     | Kavita Gupta  | Mumbai  | kavita.gupta@example.com  | 9876543210 | 777 Dream Street     |   226001 |
++-------------+---------------+---------+---------------------------+------------+----------------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO `product` (`product_id`, `product_name`, `category`, `sub_category`, `original_price`, `selling_price`, `stock`) VALUES
+    -> ('PROD001', 'Laptop', 'Electronics', 'Computers',  400000, 32000, 50),
+    -> ('PROD002', 'Smartphone', 'Electronics', 'Mobiles', 300000, 25000, 100),
+    -> ('PROD003', 'LED TV', 'Electronics', 'Televisions', 2000, 1800, 30),
+    -> ('PROD004', ' Coffee Maker', 'Appliances', 'Kitchen Appliances', 2000, 1800, 75),
+    -> ('PROD005', 'Running Shoes', 'Fashion', 'Footwear',  2500, 1400, 200),
+    -> ('PROD006', 'Backpack', 'Fashion', 'Bags', 2000, 1200, 150),
+    -> ('PROD007', 'Digital Camera', 'Electronics', 'Cameras', 7500, 6550, 20),
+    -> ('PROD008', 'Office Chair ', 'Furniture', 'Chairs', 4500, 3000, 50),
+    -> ('PROD009', 'Microwave Oven', 'Appliances', 'Kitchen Appliances', 3500, 2500, 40),
+    -> ('PROD010', 'Fitness Tracker', 'Electronics', 'Wearable Tech', 60, 49.99, 80);
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from product;
++------------+-----------------+-------------+--------------------+----------------+---------------+-------+
+| product_id | product_name    | category    | sub_category       | original_price | selling_price | stock |
++------------+-----------------+-------------+--------------------+----------------+---------------+-------+
+| PROD001    | Laptop          | Electronics | Computers          |         400000 |         32000 |    50 |
+| PROD002    | Smartphone      | Electronics | Mobiles            |         300000 |         25000 |   100 |
+| PROD003    | LED TV          | Electronics | Televisions        |          29990 |         20500 |    30 |
+| PROD004    | Coffee Maker    | Appliances  | Kitchen Appliances |           2000 |          1800 |    75 |
+| PROD005    | Running Shoes   | Fashion     | Footwear           |           2500 |          1400 |   200 |
+| PROD006    | Backpack        | Fashion     | Bags               |           2000 |          1200 |   150 |
+| PROD007    | Digital Camera  | Electronics | Cameras            |           7500 |          6550 |    20 |
+| PROD008    | Office Chair    | Furniture   | Chairs             |           4500 |          3000 |    50 |
+| PROD009    | Microwave Oven  | Appliances  | Kitchen Appliances |           7000 |          5000 |    40 |
+| PROD010    | Fitness Tracker | Electronics | Wearable Tech      |           3500 |          2500 |    80 |
++------------+-----------------+-------------+--------------------+----------------+---------------+-------+
+10 rows in set (0.01 sec)
+
+mysql> INSERT INTO `order_details` (`order_id`, `customer_id`, `product_id`, `quantity`, `total_price`, `payment_mode`, `order_date`, `order_status`) VALUES
+    -> ('CUST005', 'PROD001', 2, 4500, 'Credit Card', '2020-05-30 04:25:00', 'Shipped'),
+    -> ('CUST002', 'PROD002', 3, 114000, 'PayPal', '2022-04-20 01:25:01', 'Processing'),
+    -> ('CUST004', 'PROD003', 1, 20500, 'Credit Card', '2022-12-20 04:14:20', 'Delivered'),
+    -> ('CUST010', 'PROD004', 5, 15000, 'Cash on Delivery', '2021-02-10 14:05:20', 'Shipped'),
+    -> ('CUST005', 'PROD005', 2, 7500, 'Credit Card', '2020-12-20 07:15:00', 'Processing'),
+    -> ('CUST004', 'PROD006', 4, 10000, 'Credit Card', '2022-01-25 00:00:00', 'Delivered'),
+    -> ('CUST006', 'PROD007', 1, 2000, 'PayPal', '2020-09-10 01:14:00', 'Shipped'),
+    -> ('CUST001', 'PROD008', 2, 4500, 'Credit Card', '2021-06-05 01:15:30', 'Processing'),
+    -> ('CUST002', 'PROD009', 3, 5000, 'Cash on Delivery', '2021-06-04 01:15:30', 'Delivered'),
+    -> ('CUST006', 'PROD010', 1, 2500, 'Credit Card', '2022-01-25 00:00:00', 'Shipped');
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from order_details;
++----------+-------------+------------+----------+-------------+------------------+---------------------+--------------+
+| order_id | customer_id | product_id | quantity | total_price | payment_mode     | order_date          | order_status |
++----------+-------------+------------+----------+-------------+------------------+---------------------+--------------+
+|        1 | CUST005     | PROD001    |        2 |        4500 | Credit Card      | 2020-05-30 04:25:00 | Shipped      |
+|        2 | CUST002     | PROD002    |        3 |      114000 | PayPal           | 2022-04-20 01:25:01 | Processing   |
+|        3 | CUST004     | PROD003    |        1 |       20500 | Credit Card      | 2022-12-20 04:14:20 | Delivered    |
+|        4 | CUST010     | PROD004    |        5 |       15000 | Cash on Delivery | 2021-02-10 14:05:20 | Shipped      |
+|        5 | CUST005     | PROD005    |        2 |        7500 | Credit Card      | 2020-12-20 07:15:00 | Processing   |
+|        6 | CUST004     | PROD006    |        4 |       10000 | Credit Card      | 2022-01-25 00:00:00 | Delivered    |
+|        7 | CUST006     | PROD007    |        1 |        2000 | PayPal           | 2020-09-10 01:14:00 | Shipped      |
+|        8 | CUST001     | PROD008    |        2 |        4500 | Credit Card      | 2021-06-05 01:15:30 | Processing   |
+|        9 | CUST002     | PROD009    |        3 |        5000 | Cash on Delivery | 2021-06-04 01:15:30 | Delivered    |
+|       10 | CUST006     | PROD010    |        1 |        2500 | Credit Card      | 2022-01-25 00:00:00 | Shipped      |
++----------+-------------+------------+----------+-------------+------------------+---------------------+--------------+
+10 rows in set (0.01 sec)
